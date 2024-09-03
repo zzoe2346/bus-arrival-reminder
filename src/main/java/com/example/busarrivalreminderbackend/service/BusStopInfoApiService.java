@@ -4,13 +4,14 @@ import com.example.busarrivalreminderbackend.dto.BusStopInfoResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
+import org.springframework.web.client.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class BusStopInfoApiService {
 
     private static final int DAEGU_CITY_CODE = 22;
+    private static final int MAX_RETRY_COUNT = 3;
 
     private final RestClient client;
     private final String busStopInfoUri;
@@ -35,12 +36,28 @@ public class BusStopInfoApiService {
                 .queryParam("nodeid", busStopId)
                 .build(false)
                 .toUriString();
-        System.out.println(uri);
 
-        return client.get()
-                .uri(uri)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .body(BusStopInfoResponse.class);
+        int retryCount = 0;
+        while (retryCount < MAX_RETRY_COUNT) {
+            try {
+                return client.get()
+                        .uri(uri)
+                        .exchange((request, response) -> {
+                            if (response.getHeaders().getContentType().isCompatibleWith(MediaType.TEXT_XML)) {
+                                throw new ResourceAccessException("");
+                            }
+                            if (response.getStatusCode().is4xxClientError()) {
+                                throw new HttpClientErrorException(response.getStatusCode());
+                            }
+                            if (response.getStatusCode().is5xxServerError()) {
+                                throw new HttpServerErrorException(response.getStatusCode());
+                            }
+                            return response.bodyTo(BusStopInfoResponse.class);
+                        });
+            } catch (ResourceAccessException e) {
+                ++retryCount;
+            }
+        }
+        throw new RestClientException("외부 버스API에 이상이 있습니다.");
     }
 }
