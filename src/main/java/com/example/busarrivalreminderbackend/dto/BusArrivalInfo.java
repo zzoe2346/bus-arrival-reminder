@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class BusArrivalInfoResponse {
+public class BusArrivalInfo {
 
     public int getMinLeftTime() {
         return response.body

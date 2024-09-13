@@ -1,6 +1,6 @@
 package com.example.busarrivalreminderbackend.service;
 
-import com.example.busarrivalreminderbackend.dto.BusArrivalInfoResponse;
+import com.example.busarrivalreminderbackend.dto.BusArrivalInfo;
 import com.example.busarrivalreminderbackend.dto.BusStopInfoResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -34,13 +34,13 @@ public class BusApiService {
         this.busStopInfoPath = busStopInfoPath;
     }
 
-    public BusArrivalInfoResponse retrieveBusArrivalInfoByBusStopIdAndBusId(String busStopId, String busId) {
+    public BusArrivalInfo retrieveBusArrivalInfo(String busStopId, String busId) {
         String uri = buildUri(busArrivalInfoPath, Map.of(
                 "nodeId", busStopId,
                 "routeId", busId
         ));
 
-        return makeApiCall(uri, BusArrivalInfoResponse.class);
+        return makeApiCall(uri, BusArrivalInfo.class);
     }
 
     public BusStopInfoResponse retrieveBusIdsAtBusStop(String busStopId) {

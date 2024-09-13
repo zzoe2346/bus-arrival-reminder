@@ -36,7 +36,7 @@ class BusApiServiceTest {
 
         //Then
         assertThrows(RestClientException.class, () ->
-                busApiService.retrieveBusArrivalInfoByBusStopIdAndBusId(busStopId, busId)
+                busApiService.retrieveBusArrivalInfo(busStopId, busId)
         );
     }
 
@@ -55,6 +55,6 @@ class BusApiServiceTest {
 
         //Then
         assertDoesNotThrow(() ->
-                busApiService.retrieveBusArrivalInfoByBusStopIdAndBusId(busStopId, busId));
+                busApiService.retrieveBusArrivalInfo(busStopId, busId));
     }
 }
