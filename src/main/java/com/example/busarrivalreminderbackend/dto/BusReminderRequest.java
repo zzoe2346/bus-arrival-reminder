@@ -2,17 +2,23 @@ package com.example.busarrivalreminderbackend.dto;
 
 public class BusReminderRequest {
 
-    public BusReminderRequest(String busStopId, String busId, int targetLeftTime, int targetLeftBusStopCount, BusArrivalInfo response) {
+    String userId;
+    String busStopId;
+    String busId;
+    int targetLeftTime;
+    int targetLeftBusStopCount;
+
+    public BusReminderRequest(String userId, String busStopId, String busId, int targetLeftTime, int targetLeftBusStopCount) {
+        this.userId = userId;
         this.busStopId = busStopId;
         this.busId = busId;
         this.targetLeftTime = targetLeftTime;
         this.targetLeftBusStopCount = targetLeftBusStopCount;
     }
 
-    String busStopId;
-    String busId;
-    int targetLeftTime;
-    int targetLeftBusStopCount;
+    public String getUserId() {
+        return userId;
+    }
 
     public String getBusStopId() {
         return busStopId;

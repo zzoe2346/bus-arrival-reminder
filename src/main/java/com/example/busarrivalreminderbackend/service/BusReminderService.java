@@ -13,11 +13,13 @@ import java.util.List;
 public class BusReminderService {
 
     private final BusApiService busApiService;
+    private final PushNotificationApiService pushNotificationApiService;
     private static final List<BusReminderRequest> busTrackingList = new LinkedList<>();
     private static final int BUS_API_CALL_CYCLE_TIME = 20 * 1000;
 
-    public BusReminderService(BusApiService busApiService) {
+    public BusReminderService(BusApiService busApiService, PushNotificationApiService pushNotificationApiService) {
         this.busApiService = busApiService;
+        this.pushNotificationApiService = pushNotificationApiService;
     }
 
     public void enlistBusTracking(BusReminderRequest busReminderRequest) {
@@ -31,6 +33,8 @@ public class BusReminderService {
 
         while (iterator.hasNext()) {
             BusReminderRequest busReminderRequest = iterator.next();
+
+            String userId = busReminderRequest.getUserId();
             int targetLeftBusStopCount = busReminderRequest.getTargetLeftBusStopCount();
             int targetLeftTime = busReminderRequest.getTargetLeftTime();
 
@@ -43,9 +47,7 @@ public class BusReminderService {
             int leftTime = busArrivalInfo.getMinLeftTime();
 
             if (targetLeftBusStopCount == leftBusStopCount || targetLeftTime == leftTime) {
-
-                // 알림 로직 수행
-
+                pushNotificationApiService.requestPushNotification(userId);
                 iterator.remove();
             }
         }
