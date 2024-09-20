@@ -1,7 +1,9 @@
 package com.example.busarrivalreminderbackend.service;
 
-import com.example.busarrivalreminderbackend.dto.CheckIdResponse;
+import com.example.busarrivalreminderbackend.entity.Member;
+import com.example.busarrivalreminderbackend.exception.EmailAlreadyExistsException;
 import com.example.busarrivalreminderbackend.repository.MemberRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +19,14 @@ public class MemberService {
 
     }
 
-    public CheckIdResponse checkId(String id) {
-        if (memberRepository.existsById(id)) {
-            return new CheckIdResponse(true, "This Id is available");
-        }
-        return new CheckIdResponse(false, "Id already exists");
     }
+
+    public void checkEmailDuplication(String email) {
+
+        if (memberRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistsException();
+        }
+
+    }
+
 }

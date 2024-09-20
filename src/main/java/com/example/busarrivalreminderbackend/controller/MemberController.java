@@ -22,9 +22,12 @@ public class MemberController {
 
     }
 
-    @GetMapping("/api/members/check-id")
-    public ResponseEntity<CheckIdResponse> checkId(@RequestParam String id) {
-        return ResponseEntity.ok(memberService.checkId(id));
+    @GetMapping("/api/members/check-email/{email}")
+    public ResponseEntity<Void> checkEmailDuplication(@PathVariable String email) {
+
+        memberService.checkEmailDuplication(email);
+        return ResponseEntity.ok().build();
+
     }
 
 }
