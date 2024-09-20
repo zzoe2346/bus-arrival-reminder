@@ -15,9 +15,14 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public void signUp(String id, String password) {
+    public void signUp(String email, String password) {
 
-    }
+        try {
+            Member newMember = new Member(email, password);
+            memberRepository.save(newMember);
+        }catch (DataIntegrityViolationException e){
+            throw new EmailAlreadyExistsException();
+        }
 
     }
 
