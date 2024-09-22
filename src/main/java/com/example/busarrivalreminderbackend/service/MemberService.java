@@ -20,7 +20,7 @@ public class MemberService {
         try {
             Member newMember = new Member(email, password);
             memberRepository.save(newMember);
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new EmailAlreadyExistsException();
         }
 
@@ -32,6 +32,10 @@ public class MemberService {
             throw new EmailAlreadyExistsException();
         }
 
+    }
+
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 
 }

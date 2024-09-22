@@ -1,5 +1,6 @@
 package com.example.busarrivalreminderbackend.controller.advice;
 
+import com.example.busarrivalreminderbackend.exception.AuthenticationFailException;
 import com.example.busarrivalreminderbackend.exception.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -13,6 +14,13 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
 
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+
+    }
+
+    @ExceptionHandler(AuthenticationFailException.class)
+    public ProblemDetail handleAuthenticationFailException(AuthenticationFailException e) {
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
 
     }
 

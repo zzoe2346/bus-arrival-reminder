@@ -1,9 +1,6 @@
 package com.example.busarrivalreminderbackend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import org.hibernate.DuplicateMappingException;
-import org.springframework.dao.DataIntegrityViolationException;
 
 @Entity
 public class Member {
@@ -21,6 +18,14 @@ public class Member {
     public Member(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
 }
